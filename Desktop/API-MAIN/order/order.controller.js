@@ -8,7 +8,7 @@ const validateRequest = require('_middleware/validate-request');
 //const authorize = require('_middleware/authorize');
 
 
-
+//routers
 router.get('/', getAllOrders);
 router.get('/:id', getOrderById);
 router.put('/:id',  updateOrderSchema, update);
