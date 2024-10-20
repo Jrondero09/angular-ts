@@ -35,6 +35,34 @@ router.post('/:id/permission',authenticate,authorize([Role.Admin]), createPermis
 
 module.exports = router;
 
+
+// POST: Login Route
+router.post('/login', auth);
+
+module.exports = router;
+
+// Function to authenticate and generate a token
+function auth(req, res, next) {
+    const { username, password } = req.body;
+    
+    // Validate credentials with the user service
+    userService.auth(username, password)
+        .then(user => {
+            if (user) {
+                // Generate a JWT Token upon successful authentication
+                const token = jwt.sign({ sub: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                
+                // Send token in response
+                res.json({ message: 'Login successful', token });
+            } else {
+                res.status(400).json({ message: 'Username or password is incorrect' });
+            }
+        })
+        .catch(next);
+}
+
+
+
 function getAll(req, res, next) {
     userService.getAll()
         .then(users => res.json(users))

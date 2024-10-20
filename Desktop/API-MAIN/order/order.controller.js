@@ -4,8 +4,8 @@ const Joi = require('joi');
 const Role = require('_helpers/role');
 const orderService = require('./order.service'); 
 const validateRequest = require('_middleware/validate-request');
+//const authenticate = require('_middleware/authenticate');
 //const authorize = require('_middleware/authorize');
-//const OrderItem = require('Model/OrderItem');
 
 
 
@@ -39,19 +39,12 @@ function getOrderById(req, res, next) {
 }
 
 
-// create order
-//function create(req, res, next) {
-  //  orderService.create(req.body)
-    //    .then(() => res.json({ message: 'Order Created' }))
-      //  .catch(next);
-//}
-
 
 function create(req, res, next) {
     const { price, quantity } = req.body;
 
     // Automatically calculate the total amount
-    const totalAmount = price * quantity;  // $500 * 2 = $1000
+    const totalAmount = price * quantity;  // e.g. $55 * 20 = $1100
 
     // Create the order data object
     const orderData = {
@@ -62,7 +55,13 @@ function create(req, res, next) {
 
     // Call the service to create the order
     orderService.create(orderData)
-        .then(newOrder => res.json({ message: 'Order Created', order: newOrder }))  // Respond with created order
+        .then(newOrder => {
+            // Return only the message and totalAmount in the response
+            res.json({
+                message: 'Order Created',
+                totalAmount: totalAmount
+            });
+        })
         .catch(next);  // Pass errors to the error middleware
 }
 
@@ -74,8 +73,8 @@ function createOrderSchema(req, res, next) {
         productName: Joi.string().required(),
         quantity: Joi.number().integer().required(),  // Only quantity
         price: Joi.number().required(),
-        //totalAmount: Joi.number().required(),
-        role: Joi.string().valid(Role.Admin, Role.User).required(),
+       //totalAmount: Joi.number().required(),
+        role: Joi.string().valid(Role.Admin, Role.Customer).required(),
         status: Joi.string().valid('pending', 'shipped', 'delivered', 'cancelled').optional()
     });
 
@@ -86,7 +85,7 @@ function createOrderSchema(req, res, next) {
 function update(req, res, next) {
     orderService.update(req.params.id ,req.body)
         .then(() => res.json({ message: 'Order Updated' }))
-        .catch(next);
+       .catch(next);
 }
 
 function updateOrderSchema(req, res, next) {
@@ -129,15 +128,17 @@ function shipOrder(req, res, next) {
     const id = req.params.id;  
     orderService.shipOrder(id)  
         .then(() => res.json({ message: 'Order shipped successfully.' })) 
-        .catch(next);  
+       .catch(next);  
 }
 
 
 //deliver order
 function deliverOrder(req, res, next) {
     const orderId = req.params.id;  
-    orderService.deliverOrder(orderId)  
+   orderService.deliverOrder(orderId)  
         .then(() => res.json({ message: 'Order delivered successfully.' })) 
         .catch(next);  
 }
 
+
+////
