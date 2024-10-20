@@ -25,6 +25,10 @@ async function initialize() {
     db.ActivityLog = require('../models/activitylog.model')(sequelize);
     db.Order = require('../order/order.model')(sequelize);
     
-
+    
+   // db.Product = require('../products/product.model')(sequelize);
+    //db.Inventory = require('../inventories/inventory.model')(sequelize);
+    //db.Product.hasOne(db.Inventory, { foreignKey: 'productId', as: 'inventory', onDelete: 'CASCADE' });
+    //db.Inventory.belongsTo(db.Product, { foreignKey: 'productId' });
     await sequelize.sync({ alter: true });
 }

@@ -38,28 +38,6 @@ async function getOrder(customerId) {
     return order;
 }
 
-async function _delete(id) {
-    const order = await getUser(id);
-    await order.destroy();
-}
-
-
-//create
-//async function create(params) {
-    
-  //  const existingOrder = await db.Order.findOne({ where: { id: params.customerId } });
-    
-   // if (existingOrder) {
-     //   throw new Error(`Order with Id "${params.customerId}" is already placed.`);
-    //}
-
-
-    //const newOrder = await db.Order.create(params);
-
-
-//    return newOrder;
-//}
-
 
 async function create(params) {
     console.log('Params received in service:', params);  // Debugging log

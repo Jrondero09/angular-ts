@@ -32,8 +32,10 @@ app.use(cors());
 app.use('/users', require('./users/users.controller'));
 app.use('/api/users', require('./users/users.controller'));
 app.use('/api/auth', require('./users/users.controller'));
-//app.use('/api/products', require('./products/product.controller'));
-//app.use('/api/inventory', require('./inventories/inventory.controller'));
+
+app.use('/api/branches', require('./branches/branch.controller'));
+app.use('/api/product', require('./product/products.controller'));
+app.use('/api/inventory', require('./inventories/inventory.controller'));
 
 app.use('/api/orders', require('./order/order.controller'));
 //app.use('/api/auth', require('./order/order.controller'));
