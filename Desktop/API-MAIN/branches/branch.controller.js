@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const branchService = require('./branch.service');
 
+//ROUTES
 router.get('/', getAllBranch);
 router.get('/:id', getBranchById);
 router.post('/', createBranch);
